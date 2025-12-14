@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function SongsPage() {
-  const { data } = await publicApi.getChansons({ next: { revalidate: 120 } });
+  const { data } = await publicApi.getChansons({ next: { revalidate: 5 } });
   const chansons = (data as Chanson[]).filter(chanson => chanson.statut === 'publié');
 
   return (

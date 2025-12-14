@@ -14,7 +14,6 @@ export default function Header() {
     { name: 'Vidéos', href: '/videos' },
     { name: 'Poésies', href: '/poems' },
     { name: 'Articles', href: '/articles' },
-    { name: 'Galerie', href: '/gallery' },
     { name: 'À propos', href: '/about' },
   ];
 

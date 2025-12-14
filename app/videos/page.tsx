@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function VideosPage() {
-  const { data } = await publicApi.getVideos({ next: { revalidate: 120 } });
+  const { data } = await publicApi.getVideos({ next: { revalidate: 5 } });
   const videos = (data as VideoType[]).filter(video => video.statut === 'publié');
 
   return (
@@ -67,10 +67,7 @@ export default async function VideosPage() {
                   {video.description}
                 </p>
                 
-                <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {video.vues.toLocaleString('fr-FR')} vues
-                  </span>
+                <div className="flex items-center justify-end pt-4 border-t border-gray-100 dark:border-gray-700">
                   <Link 
                     href={`/videos/${video.id}`}
                     className="text-sm font-semibold text-gray-900 dark:text-gray-100 hover:underline"

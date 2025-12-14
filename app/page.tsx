@@ -17,11 +17,11 @@ type RecentContent = {
 export default async function Home() {
   const [{ data: dashboard }, { data: chansons }, { data: videos }, { data: poesies }, { data: articles }] =
     await Promise.all([
-      publicApi.getDashboard({ next: { revalidate: 300 } }),
-      publicApi.getChansons({ next: { revalidate: 300 } }),
-      publicApi.getVideos({ next: { revalidate: 300 } }),
-      publicApi.getPoesies({ next: { revalidate: 300 } }),
-      publicApi.getArticles({ next: { revalidate: 300 } })
+      publicApi.getDashboard({ next: { revalidate: 5 } }),
+      publicApi.getChansons({ next: { revalidate: 5 } }),
+      publicApi.getVideos({ next: { revalidate: 5 } }),
+      publicApi.getPoesies({ next: { revalidate: 5 } }),
+      publicApi.getArticles({ next: { revalidate: 5 } })
     ]);
 
   const publishedChansons = (chansons as Chanson[]).filter(chanson => chanson.statut === 'publié');
@@ -109,20 +109,20 @@ export default async function Home() {
               <TrendingUp className="h-4 w-4 mr-2" />
               {publishedChansons[0]?.metadata.album ?? 'Nouvelle sortie'}
             </div>
-            <h1 className="text-6xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-7xl mb-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-6">
               Musique, Poésie & Art
             </h1>
-            <p className="mt-4 text-2xl leading-relaxed text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <p className="mt-4 text-lg sm:text-xl md:text-2xl leading-relaxed text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
               Découvrez et écoutez mes créations musicales, poétiques et visuelles
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-4">
-              <Button size="lg" className="rounded-full px-8 py-6 text-lg" asChild>
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 px-4">
+              <Button size="lg" className="w-full sm:w-auto rounded-full px-8 py-6 text-lg" asChild>
                 <Link href="/songs">
                   <Play className="mr-2 h-5 w-5 fill-current" />
                   Écouter maintenant
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" className="rounded-full px-8 py-6 text-lg" asChild>
+              <Button variant="outline" size="lg" className="w-full sm:w-auto rounded-full px-8 py-6 text-lg" asChild>
                 <Link href="/videos">Voir les vidéos</Link>
               </Button>
             </div>

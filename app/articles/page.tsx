@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ArticlesPage() {
-  const { data } = await publicApi.getArticles({ next: { revalidate: 120 } });
+  const { data } = await publicApi.getArticles({ next: { revalidate: 5 } });
   const articles = (data as Article[]).filter(article => article.statut === 'publié');
 
   return (

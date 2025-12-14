@@ -1,5 +1,6 @@
 'use client';
 
+import React, { useState, useEffect } from 'react';
 import { Facebook, Twitter, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -9,7 +10,17 @@ interface ShareButtonsProps {
 }
 
 export default function ShareButtons({ title, url }: ShareButtonsProps) {
-  const shareUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
+  const [shareUrl, setShareUrl] = useState('');
+
+  useEffect(() => {
+    setShareUrl(url || window.location.href);
+  }, [url]);
+
+  // On évite le rendu côté serveur pour ces boutons qui dépendent de window
+  if (!shareUrl) {
+    return <div className="h-9"></div>; // Placeholder pour éviter le layout shift
+  }
+
   const encodedUrl = encodeURIComponent(shareUrl);
   const encodedTitle = encodeURIComponent(title);
 

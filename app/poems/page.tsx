@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PoemsPage() {
-  const { data } = await publicApi.getPoesies({ next: { revalidate: 120 } });
+  const { data } = await publicApi.getPoesies({ next: { revalidate: 5 } });
   const poesies = (data as Poesie[]).filter(poesie => poesie.statut === 'publié');
 
   return (
