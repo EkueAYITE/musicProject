@@ -53,9 +53,14 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       publicApi.getArticles({ next: { revalidate: 120 } })
     ]);
 
-    article = articleData as Article;
+    const currentArticle = articleData as Article | null;
+    if (!currentArticle) {
+      notFound();
+    }
+
+    article = currentArticle;
     autresArticles = (liste as Article[])
-      .filter(item => item.statut === 'publié' && item.id !== article.id)
+      .filter(item => item.statut === 'publié' && item.id !== currentArticle.id)
       .slice(0, 3);
   } catch (error) {
     notFound();

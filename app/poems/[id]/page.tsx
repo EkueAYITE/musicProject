@@ -51,9 +51,14 @@ export default async function PoemPage({ params }: PoemPageProps) {
       publicApi.getPoesies({ next: { revalidate: 120 } })
     ]);
 
-    poesie = poesieData as Poesie;
+    const currentPoesie = poesieData as Poesie | null;
+    if (!currentPoesie) {
+      notFound();
+    }
+
+    poesie = currentPoesie;
     autresPoesies = (liste as Poesie[])
-      .filter(item => item.statut === 'publié' && item.id !== poesie.id)
+      .filter(item => item.statut === 'publié' && item.id !== currentPoesie.id)
       .slice(0, 3);
   } catch (error) {
     notFound();

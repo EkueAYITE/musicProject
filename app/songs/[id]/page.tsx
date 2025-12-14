@@ -45,9 +45,14 @@ export default async function SongPage({ params }: SongPageProps) {
       publicApi.getChansons({ next: { revalidate: 120 } })
     ]);
 
-    chanson = chansonData as Chanson;
+    const currentChanson = chansonData as Chanson | null;
+    if (!currentChanson) {
+      notFound();
+    }
+
+    chanson = currentChanson;
     autresChansons = (autres as Chanson[])
-      .filter(item => item.statut === 'publié' && item.id !== chanson.id)
+      .filter(item => item.statut === 'publié' && item.id !== currentChanson.id)
       .slice(0, 3);
   } catch (error) {
     notFound();

@@ -62,9 +62,14 @@ export default async function VideoPage({ params }: VideoPageProps) {
       publicApi.getVideos({ next: { revalidate: 120 } })
     ]);
 
-    video = videoData as Video;
+    const currentVideo = videoData as Video | null;
+    if (!currentVideo) {
+      notFound();
+    }
+
+    video = currentVideo;
     autresVideos = (liste as Video[])
-      .filter(item => item.statut === 'publié' && item.id !== video.id)
+      .filter(item => item.statut === 'publié' && item.id !== currentVideo.id)
       .slice(0, 3);
   } catch (error) {
     notFound();
