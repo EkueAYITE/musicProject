@@ -80,7 +80,7 @@ export default async function ArticlesPage() {
                     href={`/articles/${article.id}`}
                     className="inline-flex items-center text-sm font-bold text-emerald-600 dark:text-emerald-400 hover:underline"
                   >
-                    Lire l'article
+                    Lire l&apos;article
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </div>
