@@ -22,10 +22,11 @@ export default async function CategorieDetailPage({ params }: PageProps) {
   const { data } = await publicApi.getVideos({ next: { revalidate: 5 } });
   const categorieNom = decodeURIComponent(rawCategorieNom);
   
+  const target = categorieNom.trim().toLowerCase();
   const videos = (data as VideoType[])
     .filter(video => {
-      const cat = video.categorie || video.typeVideo || 'Autres vidéos';
-      return video.statut === 'publié' && cat === categorieNom;
+      const cat = (video.categorie || video.typeVideo || 'Autres vidéos').trim().toLowerCase();
+      return video.statut === 'publié' && cat === target;
     })
     .sort((a, b) => a.ordreAffichage - b.ordreAffichage);
 
