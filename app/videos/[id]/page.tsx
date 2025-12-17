@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, Clock, Eye } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ShareButtons from '@/components/ShareButtons';
 import { Badge } from '@/components/ui/badge';
@@ -112,10 +112,6 @@ export default async function VideoPage({ params }: VideoPageProps) {
               <div className="flex items-center">
                 <Clock className="h-4 w-4 mr-2" />
                 <span>{video.duree}</span>
-              </div>
-              <div className="flex items-center">
-                <Eye className="h-4 w-4 mr-2" />
-                <span>{video.vues.toLocaleString('fr-FR')} vues</span>
               </div>
             </div>
           </div>

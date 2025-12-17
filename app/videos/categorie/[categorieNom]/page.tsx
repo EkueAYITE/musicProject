@@ -87,9 +87,6 @@ export default async function CategorieDetailPage({ params }: PageProps) {
                   </div>
                 </div>
                 <div className="flex items-center gap-6 flex-shrink-0">
-                  <span className="text-sm text-gray-500 dark:text-gray-400 hidden sm:block">
-                    {video.vues.toLocaleString('fr-FR')} vues
-                  </span>
                   <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
                     {video.duree}
                   </span>
