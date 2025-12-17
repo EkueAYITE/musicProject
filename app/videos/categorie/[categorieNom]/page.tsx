@@ -9,7 +9,8 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const categorieNom = decodeURIComponent(params.categorieNom);
+  const { categorieNom: rawCategorieNom } = await params;
+  const categorieNom = decodeURIComponent(rawCategorieNom);
   return {
     title: `${categorieNom} - Vidéos - Œuvres & Arts`,
     description: `Découvrez toutes les vidéos de la catégorie ${categorieNom}`,
@@ -17,8 +18,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function CategorieDetailPage({ params }: PageProps) {
+  const { categorieNom: rawCategorieNom } = await params;
   const { data } = await publicApi.getVideos({ next: { revalidate: 5 } });
-  const categorieNom = decodeURIComponent(params.categorieNom);
+  const categorieNom = decodeURIComponent(rawCategorieNom);
   
   const videos = (data as VideoType[])
     .filter(video => {

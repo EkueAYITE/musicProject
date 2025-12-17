@@ -31,7 +31,8 @@ function toYoutubeEmbed(url: string): string {
 
 export async function generateMetadata({ params }: VideoPageProps): Promise<Metadata> {
   try {
-    const { data } = await publicApi.getVideo(Number(params.id));
+    const { id } = await params;
+    const { data } = await publicApi.getVideo(Number(id));
     const video = data as Video;
 
     return {
@@ -52,7 +53,8 @@ export async function generateMetadata({ params }: VideoPageProps): Promise<Meta
 }
 
 export default async function VideoPage({ params }: VideoPageProps) {
-  const id = Number(params.id);
+  const { id: rawId } = await params;
+  const id = Number(rawId);
   let video: Video | null = null;
   let autresVideos: Video[] = [];
 

@@ -15,7 +15,8 @@ interface SongPageProps {
 
 export async function generateMetadata({ params }: SongPageProps): Promise<Metadata> {
   try {
-    const { data } = await publicApi.getChanson(Number(params.id));
+    const { id } = await params;
+    const { data } = await publicApi.getChanson(Number(id));
     const chanson = data as Chanson;
 
     return {
@@ -35,7 +36,8 @@ export async function generateMetadata({ params }: SongPageProps): Promise<Metad
 }
 
 export default async function SongPage({ params }: SongPageProps) {
-  const id = Number(params.id);
+  const { id: rawId } = await params;
+  const id = Number(rawId);
   let chanson: Chanson | null = null;
   let autresChansons: Chanson[] = [];
 

@@ -22,7 +22,8 @@ function estimateReadingTime(content: string): string {
 
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   try {
-    const { data } = await publicApi.getArticle(Number(params.id));
+    const { id } = await params;
+    const { data } = await publicApi.getArticle(Number(id));
     const article = data as Article;
 
     return {
@@ -43,7 +44,8 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
-  const id = Number(params.id);
+  const { id: rawId } = await params;
+  const id = Number(rawId);
   let article: Article | null = null;
   let autresArticles: Article[] = [];
 

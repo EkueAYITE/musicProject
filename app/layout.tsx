@@ -9,6 +9,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://ayikoeayite.com'),
   title: 'Œuvres & Arts - Poésies, Chansons, Articles & Plus',
   description: 'Découvrez mes créations artistiques et scientifiques : poésies, chansons, articles, vidéos et photographies.',
   keywords: 'poésie, chanson, article scientifique, vidéo, galerie photo, œuvres artistiques',

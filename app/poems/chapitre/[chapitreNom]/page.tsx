@@ -9,7 +9,8 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const chapitreNom = decodeURIComponent(params.chapitreNom);
+  const { chapitreNom: rawChapitreNom } = await params;
+  const chapitreNom = decodeURIComponent(rawChapitreNom);
   return {
     title: `${chapitreNom} - Poésies - Œuvres & Arts`,
     description: `Découvrez tous les poèmes du ${chapitreNom}`,
@@ -17,8 +18,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function ChapitreDetailPage({ params }: PageProps) {
+  const { chapitreNom: rawChapitreNom } = await params;
   const { data } = await publicApi.getPoesies({ next: { revalidate: 5 } });
-  const chapitreNom = decodeURIComponent(params.chapitreNom);
+  const chapitreNom = decodeURIComponent(rawChapitreNom);
   
   const poesies = (data as Poesie[])
     .filter(poesie => poesie.statut === 'publié' && poesie.chapitre === chapitreNom)

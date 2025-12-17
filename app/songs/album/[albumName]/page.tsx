@@ -9,7 +9,8 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const albumName = decodeURIComponent(params.albumName);
+  const { albumName: rawAlbumName } = await params;
+  const albumName = decodeURIComponent(rawAlbumName);
   return {
     title: `${albumName} - Album - Œuvres & Arts`,
     description: `Découvrez toutes les chansons de l'album ${albumName}`,
@@ -17,8 +18,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function AlbumDetailPage({ params }: PageProps) {
+  const { albumName: rawAlbumName } = await params;
   const { data } = await publicApi.getChansons({ next: { revalidate: 5 } });
-  const albumName = decodeURIComponent(params.albumName);
+  const albumName = decodeURIComponent(rawAlbumName);
   
   const chansons = (data as Chanson[])
     .filter(chanson => chanson.statut === 'publié' && chanson.metadata.album === albumName)

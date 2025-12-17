@@ -21,7 +21,8 @@ function estimateReadingTime(lines: number): string {
 
 export async function generateMetadata({ params }: PoemPageProps): Promise<Metadata> {
   try {
-    const { data } = await publicApi.getPoesie(Number(params.id));
+    const { id } = await params;
+    const { data } = await publicApi.getPoesie(Number(id));
     const poesie = data as Poesie;
 
     return {
@@ -41,7 +42,8 @@ export async function generateMetadata({ params }: PoemPageProps): Promise<Metad
 }
 
 export default async function PoemPage({ params }: PoemPageProps) {
-  const id = Number(params.id);
+  const { id: rawId } = await params;
+  const id = Number(rawId);
   let poesie: Poesie | null = null;
   let autresPoesies: Poesie[] = [];
 
