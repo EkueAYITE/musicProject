@@ -78,7 +78,7 @@ export default async function ChapitreDetailPage({ params }: PageProps) {
                       {poesie.titre}
                     </h3>
                     <p className="text-sm text-gray-500 dark:text-gray-400 truncate italic">
-                      {poesie.extrait.substring(0, 60)}...
+                      {(poesie.extrait || '').substring(0, 60)}...
                     </p>
                   </div>
                 </div>
@@ -96,4 +96,5 @@ export default async function ChapitreDetailPage({ params }: PageProps) {
     </div>
   );
 }
+
 
