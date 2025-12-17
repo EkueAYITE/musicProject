@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { Video, Play, Calendar } from 'lucide-react';
+import { Video, Play } from 'lucide-react';
 import { publicApi } from '@/lib/api';
 import { Video as VideoType } from '@/types';
 
@@ -12,6 +12,18 @@ export const metadata: Metadata = {
 export default async function VideosPage() {
   const { data } = await publicApi.getVideos({ next: { revalidate: 5 } });
   const videos = (data as VideoType[]).filter(video => video.statut === 'publié');
+
+  // Grouper les vidéos par catégorie (ou type si pas de catégorie)
+  const videosParCategorie = videos.reduce((acc, video) => {
+    const categorie = video.categorie || video.typeVideo || 'Autres vidéos';
+    if (!acc[categorie]) {
+      acc[categorie] = [];
+    }
+    acc[categorie].push(video);
+    return acc;
+  }, {} as Record<string, VideoType[]>);
+
+  const categories = Object.keys(videosParCategorie).sort();
 
   return (
     <div className="bg-gray-300 dark:bg-gray-900 min-h-screen py-12 relative overflow-hidden">
@@ -25,61 +37,54 @@ export default async function VideosPage() {
           </div>
           <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Vidéos</h1>
           <p className="text-xl text-gray-800 dark:text-gray-200 max-w-2xl mx-auto">
-            {`Découvrez ${videos.length} création${videos.length > 1 ? 's' : ''} audiovisuelle${videos.length > 1 ? 's' : ''} et contenus vidéo.`}
+            {`Découvrez ${videos.length} création${videos.length > 1 ? 's' : ''} audiovisuelle${videos.length > 1 ? 's' : ''} organisée${videos.length > 1 ? 's' : ''} en ${categories.length} catégorie${categories.length > 1 ? 's' : ''}.`}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {videos.map(video => (
-            <div key={video.id} className="group bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-lg dark:shadow-gray-950/50 hover:shadow-xl transition-all duration-300 border border-gray-200/60 dark:border-gray-700/60">
-              <div className="relative aspect-video overflow-hidden">
-                <img 
-                  src={video.thumbnailUrl} 
-                  alt={video.titre}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
-                    <Play className="w-5 h-5 text-gray-900 ml-1" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {categories.map(categorie => {
+            const categorieVideos = videosParCategorie[categorie];
+            const totalVideos = categorieVideos.length;
+            
+            return (
+              <Link
+                key={categorie}
+                href={`/videos/categorie/${encodeURIComponent(categorie)}`}
+                className="group block"
+              >
+                <div className="relative overflow-hidden rounded-3xl bg-amber-400 dark:bg-amber-900/70 p-10 hover:shadow-2xl transition-all duration-300 h-full">
+                  <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-white dark:bg-gray-950 rounded-t-[40%]"></div>
+                  <div className="relative z-10">
+                    <Video className="h-12 w-12 text-white dark:text-amber-200 mb-6 group-hover:scale-110 transition-transform duration-300" />
+                    <h3 className="text-2xl font-bold text-white dark:text-amber-100 mb-3 line-clamp-2">
+                      {categorie}
+                    </h3>
+                    <p className="text-gray-900 dark:text-gray-100 mb-4 text-base">Catégorie</p>
+                    <div className="inline-flex items-center text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      <Play className="h-4 w-4 mr-2" />
+                      {totalVideos} vidéo{totalVideos > 1 ? 's' : ''}
+                    </div>
                   </div>
                 </div>
-                <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                  {video.duree}
-                </div>
-              </div>
-              
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded">
-                    {video.typeVideo}
-                  </span>
-                  <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
-                    <Calendar className="w-3 h-3 mr-1" />
-                    {new Date(video.datePublication ?? video.dateCreation).toLocaleDateString('fr-FR')}
-                  </div>
-                </div>
-                
-                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2 line-clamp-1">
-                  {video.titre}
-                </h3>
-                
-                <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-2 mb-4">
-                  {video.description}
-                </p>
-                
-                <div className="flex items-center justify-end pt-4 border-t border-gray-100 dark:border-gray-700">
-                  <Link 
-                    href={`/videos/${video.id}`}
-                    className="text-sm font-semibold text-gray-900 dark:text-gray-100 hover:underline"
-                  >
-                    Regarder
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>
   );
 }
+
+/*
+        {categories.map(categorie => (
+          <div key={categorie} className="mb-16">
+            <Link href={`/videos/categorie/${encodeURIComponent(categorie)}`} className="group">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8 flex items-center hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
+                <span className="h-1 w-12 bg-amber-500 dark:bg-amber-400 group-hover:bg-amber-600 dark:group-hover:bg-amber-500 mr-4 transition-colors"></span>
+                {categorie}
+              </h2>
+            </Link>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {videosParCategorie[categorie].map(video => (
+*/

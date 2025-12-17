@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { Music, Disc, ExternalLink, Play } from 'lucide-react';
+import { Music, Disc } from 'lucide-react';
 import { publicApi } from '@/lib/api';
 import { Chanson } from '@/types';
 
@@ -12,6 +12,18 @@ export const metadata: Metadata = {
 export default async function SongsPage() {
   const { data } = await publicApi.getChansons({ next: { revalidate: 5 } });
   const chansons = (data as Chanson[]).filter(chanson => chanson.statut === 'publié');
+
+  // Grouper les chansons par album
+  const chansonsParAlbum = chansons.reduce((acc, chanson) => {
+    const album = chanson.metadata.album || 'Singles';
+    if (!acc[album]) {
+      acc[album] = [];
+    }
+    acc[album].push(chanson);
+    return acc;
+  }, {} as Record<string, Chanson[]>);
+
+  const albums = Object.keys(chansonsParAlbum).sort();
 
   return (
     <div className="bg-gray-300 dark:bg-gray-900 min-h-screen py-12 relative overflow-hidden">
@@ -25,79 +37,54 @@ export default async function SongsPage() {
           </div>
           <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Chansons</h1>
           <p className="text-xl text-gray-800 dark:text-gray-200 max-w-2xl mx-auto">
-            {`Explorez ${chansons.length} composition${chansons.length > 1 ? 's' : ''} originales issues de mes projets musicaux.`}
+            {`Explorez ${chansons.length} composition${chansons.length > 1 ? 's' : ''} organisée${chansons.length > 1 ? 's' : ''} en ${albums.length} album${albums.length > 1 ? 's' : ''}.`}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {chansons.map(chanson => (
-            <div key={chanson.id} className="group bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-lg dark:shadow-gray-950/50 border border-gray-200/60 dark:border-gray-700/60 transition-transform hover:-translate-y-1">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gray-900 dark:bg-gray-700 flex items-center justify-center text-white font-semibold">
-                    <Disc className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{chanson.titre}</h2>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Album : {chanson.metadata.album ?? 'Single'}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {albums.map(album => {
+            const albumChansons = chansonsParAlbum[album];
+            const totalDuration = albumChansons.length;
+            
+            return (
+              <Link
+                key={album}
+                href={`/songs/album/${encodeURIComponent(album)}`}
+                className="group block"
+              >
+                <div className="relative overflow-hidden rounded-3xl bg-gray-400 dark:bg-gray-800 p-10 hover:shadow-2xl transition-all duration-300 h-full">
+                  <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-white dark:bg-gray-950 rounded-t-[40%]"></div>
+                  <div className="relative z-10">
+                    <Disc className="h-12 w-12 text-white dark:text-gray-200 mb-6 group-hover:rotate-180 transition-transform duration-500" />
+                    <h3 className="text-2xl font-bold text-white dark:text-gray-200 mb-3 line-clamp-2">
+                      {album}
+                    </h3>
+                    <p className="text-gray-900 dark:text-gray-100 mb-4 text-base">Album</p>
+                    <div className="inline-flex items-center text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      <Music className="h-4 w-4 mr-2" />
+                      {totalDuration} titre{totalDuration > 1 ? 's' : ''}
+                    </div>
                   </div>
                 </div>
-                <span className="text-xs uppercase tracking-wide px-3 py-1 bg-gray-900 text-white dark:bg-white dark:text-gray-900 rounded-full">
-                  {chanson.metadata.genre}
-                </span>
-              </div>
-
-              <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                <p>
-                  <span className="font-medium text-gray-900 dark:text-gray-100">Durée :</span> {chanson.duree}
-                </p>
-                <p>
-                  <span className="font-medium text-gray-900 dark:text-gray-100">Plays :</span> {chanson.plays.toLocaleString('fr-FR')}
-                </p>
-                <p>
-                  <span className="font-medium text-gray-900 dark:text-gray-100">Composé par :</span> {chanson.metadata.compositeur}
-                </p>
-                <p>
-                  <span className="font-medium text-gray-900 dark:text-gray-100">Publication :</span>{' '}
-                  {new Date(chanson.datePublication ?? chanson.dateCreation).toLocaleDateString('fr-FR')}
-                </p>
-              </div>
-
-              <div className="mt-6">
-                <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-3">
-                  Disponible sur
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {Object.entries(chanson.plateformes)
-                    .filter(([, url]) => Boolean(url))
-                    .map(([platform, url]) => (
-                      <a
-                        key={platform}
-                        href={url as string}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1 text-xs px-3 py-1 rounded-full bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 hover:opacity-80"
-                      >
-                        <ExternalLink className="w-3 h-3" />
-                        {platform}
-                      </a>
-                    ))}
-                </div>
-              </div>
-
-              <div className="mt-6 text-right">
-                <Link
-                  href={`/songs/${chanson.id}`}
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-gray-100 hover:underline"
-                >
-                  Voir les détails
-                  <Play className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>
   );
 }
+
+/*
+        {albums.map(album => (
+          <div key={album} className="mb-16">
+            <Link href={`/songs/album/${encodeURIComponent(album)}`} className="group">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8 flex items-center hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                <Disc className="w-8 h-8 text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 mr-4 transition-colors" />
+                {album}
+              </h2>
+            </Link>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {chansonsParAlbum[album].map(chanson => (
+*/

@@ -2,7 +2,6 @@ import {
   Article,
   Chanson,
   DashboardSummary,
-  GalerieItem,
   Poesie,
   Video,
   ApiResponse
@@ -44,8 +43,7 @@ export const publicApi = {
   getPoesies: (init?: FetchInit) => fetchJson<ApiResponse<Poesie[]>>('/poesies', init),
   getPoesie: (id: number, init?: FetchInit) => fetchJson<ApiResponse<Poesie>>(`/poesies/${id}`, init),
   getArticles: (init?: FetchInit) => fetchJson<ApiResponse<Article[]>>('/articles', init),
-  getArticle: (id: number, init?: FetchInit) => fetchJson<ApiResponse<Article>>(`/articles/${id}`, init),
-  getGalerie: (init?: FetchInit) => fetchJson<ApiResponse<GalerieItem[]>>('/galerie', init)
+  getArticle: (id: number, init?: FetchInit) => fetchJson<ApiResponse<Article>>(`/articles/${id}`, init)
 };
 
 export const contactApi = {

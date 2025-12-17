@@ -38,6 +38,7 @@ export interface Video {
   urlYoutube: string;
   thumbnailUrl: string;
   typeVideo: string;
+  categorie: string | null; // Organisation par catégorie/playlist
   vues: number;
   statut: 'publié' | 'brouillon';
   dateCreation: string;
@@ -52,6 +53,7 @@ export interface Poesie {
   contenu: string;
   nombreLignes: number;
   extrait: string;
+  chapitre: string | null; // Organisation par chapitre
   statut: 'publié' | 'brouillon';
   vues: number;
   dateCreation: string;
@@ -73,6 +75,7 @@ export interface Article {
   dateCreation: string;
   datePublication: string | null;
   dateModification: string;
+  ordreAffichage: number;
   categorie: string;
   tags: string[];
 }
@@ -98,7 +101,7 @@ export interface StatistiqueMetadata {
 
 export interface Statistique {
   id: number;
-  typeContenu: 'chanson' | 'video' | 'poesie' | 'article' | 'galerie';
+  typeContenu: 'chanson' | 'video' | 'poesie' | 'article';
   contenuId: number;
   action: string;
   dateAction: string;
@@ -113,7 +116,6 @@ export interface DashboardSummary {
     videos: number;
     poesies: number;
     articles: number;
-    galerie: number;
   };
   publishedCounts: {
     chansons: number;
