@@ -55,12 +55,12 @@ export default async function PoemsPage() {
                 <div className="relative overflow-hidden rounded-3xl bg-rose-400 dark:bg-rose-900/70 p-10 hover:shadow-2xl transition-all duration-300 h-full">
                   <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-white dark:bg-gray-950 rounded-t-[40%]"></div>
                   <div className="relative z-10">
-                    <BookOpen className="h-12 w-12 text-white dark:text-rose-200 mb-6 group-hover:scale-110 transition-transform duration-300" />
-                    <h3 className="text-2xl font-bold text-white dark:text-rose-100 mb-3 line-clamp-2">
+                    <BookOpen className="h-12 w-12 text-rose-900 dark:text-rose-200 mb-6 group-hover:scale-110 transition-transform duration-300" />
+                    <h3 className="text-2xl font-bold text-rose-900 dark:text-rose-100 mb-3 line-clamp-2">
                       {chapitre}
                     </h3>
-                    <p className="text-gray-900 dark:text-gray-100 mb-4 text-base">Chapitre</p>
-                    <div className="inline-flex items-center text-sm font-semibold text-gray-900 dark:text-gray-100">
+                    <p className="text-gray-800 dark:text-gray-100 mb-4 text-base">Chapitre</p>
+                    <div className="inline-flex items-center text-sm font-semibold text-gray-800 dark:text-gray-100">
                       <Feather className="h-4 w-4 mr-2" />
                       {totalPoems} poème{totalPoems > 1 ? 's' : ''}
                     </div>

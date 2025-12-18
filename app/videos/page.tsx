@@ -55,12 +55,12 @@ export default async function VideosPage() {
                 <div className="relative overflow-hidden rounded-3xl bg-amber-400 dark:bg-amber-900/70 p-10 hover:shadow-2xl transition-all duration-300 h-full">
                   <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-white dark:bg-gray-950 rounded-t-[40%]"></div>
                   <div className="relative z-10">
-                    <Video className="h-12 w-12 text-white dark:text-amber-200 mb-6 group-hover:scale-110 transition-transform duration-300" />
-                    <h3 className="text-2xl font-bold text-white dark:text-amber-100 mb-3 line-clamp-2">
+                    <Video className="h-12 w-12 text-amber-900 dark:text-amber-200 mb-6 group-hover:scale-110 transition-transform duration-300" />
+                    <h3 className="text-2xl font-bold text-amber-900 dark:text-amber-100 mb-3 line-clamp-2">
                       {categorie}
                     </h3>
-                    <p className="text-gray-900 dark:text-gray-100 mb-4 text-base">Catégorie</p>
-                    <div className="inline-flex items-center text-sm font-semibold text-gray-900 dark:text-gray-100">
+                    <p className="text-gray-800 dark:text-gray-100 mb-4 text-base">Catégorie</p>
+                    <div className="inline-flex items-center text-sm font-semibold text-gray-800 dark:text-gray-100">
                       <Play className="h-4 w-4 mr-2" />
                       {totalVideos} vidéo{totalVideos > 1 ? 's' : ''}
                     </div>

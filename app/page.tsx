@@ -119,7 +119,7 @@ export default async function Home() {
               <Button size="lg" className="w-full sm:w-auto rounded-full px-8 py-6 text-lg" asChild>
                 <Link href="/songs">
                   <Play className="mr-2 h-5 w-5 fill-current" />
-                  Écouter maintenant
+                 Voir les chansons
                 </Link>
               </Button>
               <Button variant="outline" size="lg" className="w-full sm:w-auto rounded-full px-8 py-6 text-lg" asChild>
@@ -150,12 +150,12 @@ export default async function Home() {
                   <div className="relative overflow-hidden rounded-3xl bg-gray-400 dark:bg-gray-800 p-10 hover:shadow-2xl transition-all duration-300 h-full">
                     <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-white dark:bg-gray-950 rounded-t-[40%]"></div>
                     <div className="relative z-10">
-                      <Icon className="h-12 w-12 text-white dark:text-gray-200 mb-6" />
-                      <h3 className="text-3xl font-bold text-white dark:text-gray-200 mb-3">
+                      <Icon className="h-12 w-12 text-gray-800 dark:text-gray-200 mb-6" />
+                      <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-200 mb-3">
                         {item.title}
                       </h3>
-                      <p className="text-gray-900 dark:text-gray-100 mb-4 text-lg">{item.description}</p>
-                      <div className="inline-flex items-center text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      <p className="text-gray-800 dark:text-gray-100 mb-4 text-lg">{item.description}</p>
+                      <div className="inline-flex items-center text-sm font-semibold text-gray-800 dark:text-gray-100">
                         <Clock className="h-4 w-4 mr-2" />
                         {item.count}
                       </div>
