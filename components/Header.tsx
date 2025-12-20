@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
-import { Menu, X, Music2 } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 
 export default function Header() {
@@ -22,9 +23,16 @@ export default function Header() {
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Top">
         <div className="flex w-full items-center justify-between py-4">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-2">
-              <Music2 className="h-8 w-8 text-gray-900 dark:text-gray-100" />
-              <span className="text-xl font-bold text-gray-900 dark:text-gray-100">MUSIQUE</span>
+            <Link href="/" className="flex items-center">
+              <div className="relative h-14 w-14 rounded-full overflow-hidden ring-2 ring-gray-300 dark:ring-gray-700 hover:ring-4 transition-all">
+                <Image
+                  src="/logo.jpg"
+                  alt="Logo"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
             </Link>
           </div>
 
