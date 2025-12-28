@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Disc, Music } from 'lucide-react';
+import { Disc, Music, Clock } from 'lucide-react';
 import { Chanson } from '@/types';
 import SearchBar from './SearchBar';
 
@@ -24,7 +24,11 @@ export default function SearchableSongs({ chansons }: SearchableSongsProps) {
     );
   });
 
-  // Grouper les chansons filtrées par album
+  // Si recherche active, afficher les chansons individuelles
+  // Sinon, afficher les albums
+  const isSearching = searchQuery.trim().length > 0;
+
+  // Grouper les chansons filtrées par album (pour l'affichage par défaut)
   const chansonsParAlbum = filteredChansons.reduce((acc, chanson) => {
     const album = chanson.metadata.album || 'Singles';
     if (!acc[album]) {
@@ -45,13 +49,67 @@ export default function SearchableSongs({ chansons }: SearchableSongsProps) {
         />
       </div>
 
-      {albums.length === 0 ? (
+      {filteredChansons.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Aucune chanson trouvée pour &quot;{searchQuery}&quot;
+            {isSearching 
+              ? `Aucune chanson trouvée pour "${searchQuery}"`
+              : 'Aucune chanson disponible pour le moment'
+            }
           </p>
         </div>
+      ) : isSearching ? (
+        // Affichage des chansons individuelles lors de la recherche
+        <div className="space-y-4">
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+            {filteredChansons.length} résultat{filteredChansons.length > 1 ? 's' : ''} trouvé{filteredChansons.length > 1 ? 's' : ''}
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredChansons.map((chanson) => (
+              <Link
+                key={chanson.id}
+                href={`/songs/${chanson.id}`}
+                className="group block"
+              >
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-400">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <Music className="w-6 h-6 text-white" />
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100 mb-1 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        {chanson.titre}
+                      </h3>
+                      <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                        {chanson.metadata.album && (
+                          <p className="flex items-center gap-1">
+                            <Disc className="w-3 h-3" />
+                            <span className="truncate">{chanson.metadata.album}</span>
+                          </p>
+                        )}
+                        {chanson.duree && (
+                          <p className="flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            <span>{chanson.duree}</span>
+                          </p>
+                        )}
+                        {chanson.metadata.genre && (
+                          <p className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full inline-block">
+                            {chanson.metadata.genre}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
       ) : (
+        // Affichage des albums par défaut (sans recherche)
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {albums.map(album => {
             const albumChansons = chansonsParAlbum[album];
@@ -85,4 +143,7 @@ export default function SearchableSongs({ chansons }: SearchableSongsProps) {
     </>
   );
 }
+
+
+
 

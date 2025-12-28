@@ -24,9 +24,9 @@ export default function Header() {
         <div className="flex w-full items-center justify-between py-4">
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
-              <div className="relative h-14 w-14 rounded-full overflow-hidden ring-2 ring-gray-300 dark:ring-gray-700 hover:ring-4 transition-all">
+              <div className="relative h-24 w-24 rounded-full overflow-hidden ring-2 ring-gray-300 dark:ring-gray-700 hover:ring-4 transition-all">
                 <Image
-                  src="/logo.jpg"
+                  src="/WhatsApp Image 2025-12-21 at 16.37.33.jpeg"
                   alt="Logo"
                   fill
                   className="object-cover"

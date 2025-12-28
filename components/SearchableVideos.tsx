@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Video, Play } from 'lucide-react';
+import { Video, Play, Clock } from 'lucide-react';
 import { Video as VideoType } from '@/types';
 import SearchBar from './SearchBar';
 
@@ -24,7 +24,11 @@ export default function SearchableVideos({ videos }: SearchableVideosProps) {
     );
   });
 
-  // Grouper les vidéos filtrées par catégorie
+  // Si recherche active, afficher les vidéos individuelles
+  // Sinon, afficher les catégories
+  const isSearching = searchQuery.trim().length > 0;
+
+  // Grouper les vidéos filtrées par catégorie (pour l'affichage par défaut)
   const videosParCategorie = filteredVideos.reduce((acc, video) => {
     const categorie = video.categorie || video.typeVideo || 'Autres vidéos';
     if (!acc[categorie]) {
@@ -45,13 +49,67 @@ export default function SearchableVideos({ videos }: SearchableVideosProps) {
         />
       </div>
 
-      {categories.length === 0 ? (
+      {filteredVideos.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Aucune vidéo trouvée pour &quot;{searchQuery}&quot;
+            {isSearching 
+              ? `Aucune vidéo trouvée pour "${searchQuery}"`
+              : 'Aucune vidéo disponible pour le moment'
+            }
           </p>
         </div>
+      ) : isSearching ? (
+        // Affichage des vidéos individuelles lors de la recherche
+        <div className="space-y-4">
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+            {filteredVideos.length} résultat{filteredVideos.length > 1 ? 's' : ''} trouvé{filteredVideos.length > 1 ? 's' : ''}
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredVideos.map((video) => (
+              <Link
+                key={video.id}
+                href={`/videos/${video.id}`}
+                className="group block"
+              >
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-400">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
+                        <Play className="w-6 h-6 text-white" />
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100 mb-1 line-clamp-2 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                        {video.titre}
+                      </h3>
+                      <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                        {video.categorie && (
+                          <p className="flex items-center gap-1">
+                            <Video className="w-3 h-3" />
+                            <span className="truncate">{video.categorie}</span>
+                          </p>
+                        )}
+                        {video.duree && (
+                          <p className="flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            <span>{video.duree}</span>
+                          </p>
+                        )}
+                        {video.description && (
+                          <p className="text-xs text-gray-500 dark:text-gray-500 line-clamp-2">
+                            {video.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
       ) : (
+        // Affichage des catégories par défaut (sans recherche)
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {categories.map(categorie => {
             const categorieVideos = videosParCategorie[categorie];
@@ -85,4 +143,7 @@ export default function SearchableVideos({ videos }: SearchableVideosProps) {
     </>
   );
 }
+
+
+
 
