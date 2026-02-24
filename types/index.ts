@@ -132,6 +132,13 @@ export interface DashboardSummary {
   recentStats: Statistique[];
 }
 
+export interface APropos {
+  titre: string;
+  sousTitre: string;
+  parcours: string;
+  vision: string;
+}
+
 export interface ApiResponse<T> {
   data: T;
 }

@@ -26,7 +26,7 @@ export default function Header() {
             <Link href="/" className="flex items-center">
               <div className="relative h-24 w-24 rounded-full overflow-hidden ring-2 ring-gray-300 dark:ring-gray-700 hover:ring-4 transition-all">
                 <Image
-                  src="/WhatsApp Image 2025-12-21 at 16.37.33.jpeg"
+                  src="/PP.jpeg"
                   alt="Logo"
                   fill
                   className="object-cover"

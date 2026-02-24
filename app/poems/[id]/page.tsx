@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { publicApi } from '@/lib/api';
 import { Poesie } from '@/types';
 import { notFound } from 'next/navigation';
+import PoemRenderer from '@/components/PoemRenderer';
 
 interface PoemPageProps {
   params: {
@@ -113,9 +114,10 @@ export default async function PoemPage({ params }: PoemPageProps) {
             )}
           </div>
 
-          <div className="prose prose-slate dark:prose-invert max-w-none mb-8 whitespace-pre-line">
-            {poesie.contenu}
-          </div>
+          <PoemRenderer
+            content={poesie.contenu}
+            className="prose prose-slate dark:prose-invert max-w-none mb-8"
+          />
 
           <div className="border-t border-slate-200 dark:border-gray-700 pt-6">
             <ShareButtons title={`Découvrez ${poesie.titre}`} />

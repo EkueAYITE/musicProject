@@ -1,5 +1,6 @@
 import {
   Article,
+  APropos,
   Chanson,
   DashboardSummary,
   Poesie,
@@ -43,7 +44,8 @@ export const publicApi = {
   getPoesies: (init?: FetchInit) => fetchJson<ApiResponse<Poesie[]>>('/poesies', init),
   getPoesie: (id: number, init?: FetchInit) => fetchJson<ApiResponse<Poesie>>(`/poesies/${id}`, init),
   getArticles: (init?: FetchInit) => fetchJson<ApiResponse<Article[]>>('/articles', init),
-  getArticle: (id: number, init?: FetchInit) => fetchJson<ApiResponse<Article>>(`/articles/${id}`, init)
+  getArticle: (id: number, init?: FetchInit) => fetchJson<ApiResponse<Article>>(`/articles/${id}`, init),
+  getAPropos: (init?: FetchInit) => fetchJson<ApiResponse<APropos>>('/apropos', init),
 };
 
 export const contactApi = {
