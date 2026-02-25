@@ -53,11 +53,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-200 dark:border-gray-700 mt-8 pt-8 text-sm text-center flex flex-col md:flex-row justify-between items-center">
+        <div className="border-t border-gray-200 dark:border-gray-700 mt-8 pt-8 text-sm text-center">
           <p>&copy; {currentYear} Œuvres & Arts. Tous droits réservés.</p>
-          <Link href="/mentions-legales" className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors mt-2 md:mt-0">
-            Mentions Légales
-          </Link>
         </div>
       </div>
     </footer>
